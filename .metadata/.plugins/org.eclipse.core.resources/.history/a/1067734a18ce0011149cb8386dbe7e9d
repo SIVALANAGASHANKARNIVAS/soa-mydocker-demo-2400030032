@@ -1,0 +1,62 @@
+package com.klef.soa.docker.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.klef.soa.docker.entity.PetGroomingCenter;
+import com.klef.soa.docker.service.PetGroomingCenterService;
+
+@RestController
+@RequestMapping("/centers")
+public class PetGroomingCenterController {
+
+	@Autowired
+    private PetGroomingCenterService service;
+	
+    @PostMapping("/add")
+    public ResponseEntity<PetGroomingCenter> addCenter(@RequestBody PetGroomingCenter center)
+    {
+    	PetGroomingCenter request = service.addCenter(center);
+        return ResponseEntity.status(201).body(request);
+    }
+
+    @GetMapping("/displayAll")
+    public ResponseEntity<List<PetGroomingCenter>> displayAllCenters()
+    {
+    	List<PetGroomingCenter> centers = service.displayAllCenters();
+        return ResponseEntity.ok(centers);
+    }
+
+    @GetMapping("/center/{id}")
+    public ResponseEntity<PetGroomingCenter> displayCenterById(@PathVariable int id)
+    {
+    	PetGroomingCenter found = service.displayCenterById(id);
+        return ResponseEntity.ok(service.getCenterById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PetGroomingCenter> updateCenter(
+            @PathVariable Long id,
+            @Valid @RequestBody PetGroomingCenter center) {
+        return ResponseEntity.ok(
+                service.updateCenter(id, center));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCenter(
+            @PathVariable Long id) {
+        service.deleteCenter(id);
+        return ResponseEntity.noContent().build();
+    }
+}

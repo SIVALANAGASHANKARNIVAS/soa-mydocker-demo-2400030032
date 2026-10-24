@@ -1,0 +1,64 @@
+package com.klef.soa.docker.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.klef.soa.docker.entity.PetGroomingCenter;
+import com.klef.soa.docker.exception.ResourceNotFoundException;
+import com.klef.soa.docker.repository.PetGroomingCenterRepository;
+
+@Service
+public class PetGroomingCenterServiceImpl implements PetGroomingCenterService {
+
+	@Autowired
+    private  PetGroomingCenterRepository repository;
+
+	@Override
+	public PetGroomingCenter addCenter(PetGroomingCenter center) {
+		PetGroomingCenter c = repository.save(center);
+		return c;
+		
+	}
+
+	@Override
+	public List<PetGroomingCenter> displayAllCenters() {
+		return repository.findAll();
+	}
+
+	@Override
+	public PetGroomingCenter displayCenterById(long id) 
+	{
+		return repository.findById(id)
+				.orElseThrow(() ->
+						new ResourceNotFoundException("Id Not Found:"+id));
+		
+		
+	}
+
+	 @Override
+	    public PetGroomingCenter updateCenter(long id, PetGroomingCenter center) {
+
+	        PetGroomingCenter c = repository.findById(id)
+	                .orElseThrow(() ->
+	                    new ResourceNotFoundException("Id Not Found: " + id));
+
+	        c.setCenterName(center.getCenterName());
+	        c.setLocation(center.getLocation());
+	        c.setServicecount(center.getServicecount());
+	        c.setOpen(center.isOpen());
+
+	        return repository.save(c);
+	    }
+
+	@Override
+	public void deleteCenter(long id)
+	{
+	PetGroomingCenter center=	repository.deleteById(id);
+		
+	}
+
+  
+   
+}

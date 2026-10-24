@@ -1,0 +1,17 @@
+package com.klef.soa.docker.service;
+
+import java.util.List;
+import com.klef.soa.docker.entity.PetGroomingCenter;
+
+public interface PetGroomingCenterService {
+
+    PetGroomingCenter addCenter(PetGroomingCenter center);
+
+    List<PetGroomingCenter> displayAllCenters();
+
+    PetGroomingCenter displayCenterById(int id);
+
+    PetGroomingCenter updateCenter(int id, PetGroomingCenter center);
+
+    void deleteCenter(int id);
+}
